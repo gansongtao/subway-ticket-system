@@ -5,7 +5,7 @@ spring:
     exclude: []
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/subway_ticket_system?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://localhost:3306/subway_ticket_system
     username: root
     password: ${SPRING_DATASOURCE_PASSWORD:123456}
     hikari:

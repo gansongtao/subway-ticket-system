@@ -31,3 +31,8 @@ subway:
       interval: 4
       price-per-interval: 1.00
       base-price-for-extra: 6.00
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
