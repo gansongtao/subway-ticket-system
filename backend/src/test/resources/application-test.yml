@@ -1,0 +1,57 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: subway-ticket-backend
+  autoconfigure:
+    exclude: []
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:subway_test;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+    hikari:
+      maximum-pool-size: 5
+  flyway:
+    enabled: false
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema-h2.sql
+      continue-on-error: false
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: auto
+
+subway:
+  graph:
+    cost-per-station: 100
+    cost-per-transfer: 350
+  fare:
+    base-price: 2.00
+    base-distance: 2
+    rules:
+      - distance: 2
+        price: 2.00
+      - distance: 4
+        price: 3.00
+      - distance: 7
+        price: 4.00
+      - distance: 12
+        price: 5.00
+      - distance: 16
+        price: 6.00
+    extra:
+      start-distance: 16
+      interval: 4
+      price-per-interval: 1.00
+      base-price-for-extra: 6.00
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false

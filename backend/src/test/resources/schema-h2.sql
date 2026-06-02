@@ -1,0 +1,96 @@
+CREATE TABLE IF NOT EXISTS line (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(64) NOT NULL,
+  color VARCHAR(16) NOT NULL,
+  code VARCHAR(16) NOT NULL UNIQUE,
+  is_active SMALLINT NOT NULL DEFAULT 1,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS station (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(64) NOT NULL,
+  line_id BIGINT NOT NULL,
+  code VARCHAR(64) NOT NULL,
+  lng DECIMAL(10,6) NULL,
+  lat DECIMAL(10,6) NULL,
+  is_active SMALLINT NOT NULL DEFAULT 1,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_station_line(line_id),
+  CONSTRAINT fk_station_line FOREIGN KEY (line_id) REFERENCES line(id)
+);
+
+CREATE TABLE IF NOT EXISTS line_station (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  line_id BIGINT NOT NULL,
+  station_id BIGINT NOT NULL,
+  seq INT NOT NULL,
+  INDEX idx_line_station_line(line_id),
+  INDEX idx_line_station_station(station_id),
+  CONSTRAINT fk_ls_line FOREIGN KEY (line_id) REFERENCES line(id),
+  CONSTRAINT fk_ls_station FOREIGN KEY (station_id) REFERENCES station(id)
+);
+
+CREATE TABLE IF NOT EXISTS fare_rule (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  rule_type VARCHAR(32) NOT NULL,
+  base_price DECIMAL(10,2) NOT NULL DEFAULT 2.00,
+  per_segment_price DECIMAL(10,2) NOT NULL DEFAULT 0.50,
+  is_active SMALLINT NOT NULL DEFAULT 1,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS orders (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  user_id BIGINT NULL,
+  from_station_id BIGINT NOT NULL,
+  to_station_id BIGINT NOT NULL,
+  price DECIMAL(10,2) NOT NULL,
+  status VARCHAR(16) NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_orders_status(status),
+  CONSTRAINT fk_orders_from FOREIGN KEY (from_station_id) REFERENCES station(id),
+  CONSTRAINT fk_orders_to FOREIGN KEY (to_station_id) REFERENCES station(id)
+);
+
+CREATE TABLE IF NOT EXISTS payment (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  order_id BIGINT NOT NULL,
+  amount DECIMAL(10,2) NOT NULL,
+  status VARCHAR(16) NOT NULL,
+  paid_at TIMESTAMP NULL,
+  channel VARCHAR(32) NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_payment_order(order_id),
+  CONSTRAINT fk_payment_order FOREIGN KEY (order_id) REFERENCES orders(id)
+);
+
+CREATE TABLE IF NOT EXISTS qrcode_token (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  order_id BIGINT NOT NULL,
+  nonce VARCHAR(64) NOT NULL,
+  expires_at TIMESTAMP NOT NULL,
+  signature VARCHAR(128) NOT NULL,
+  payload TEXT NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_qr_order(order_id),
+  CONSTRAINT fk_qr_order FOREIGN KEY (order_id) REFERENCES orders(id)
+);
+
+CREATE TABLE IF NOT EXISTS ticket (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  order_id BIGINT NOT NULL,
+  qrcode_token_id BIGINT NOT NULL,
+  issued_at TIMESTAMP NULL,
+  status VARCHAR(16) NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_ticket_order(order_id),
+  CONSTRAINT fk_ticket_order FOREIGN KEY (order_id) REFERENCES orders(id),
+  CONSTRAINT fk_ticket_qr FOREIGN KEY (qrcode_token_id) REFERENCES qrcode_token(id)
+);
