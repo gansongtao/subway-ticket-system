@@ -24,11 +24,10 @@ jobs:
 
       - name: Run integration tests
         run: mvn test -pl backend -Dspring.profiles.active=test
-        working-directory: ./subway-ticket-system
 
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: test-results
-          path: subway-ticket-system/backend/target/surefire-reports/
+          path: backend/target/surefire-reports/
