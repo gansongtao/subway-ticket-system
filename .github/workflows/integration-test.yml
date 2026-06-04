@@ -25,7 +25,7 @@ jobs:
       - name: Run integration tests
         run: |
           cd backend
-          mvn test -pl backend -Dspring.profiles.active=test
+          mvn test -pl subway-ticket-backend -Dspring.profiles.active=test
 
       - name: Upload test results
         if: always()
