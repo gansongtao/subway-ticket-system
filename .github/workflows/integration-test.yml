@@ -23,9 +23,7 @@ jobs:
           cache: maven
 
       - name: Run integration tests
-        run: |
-          cd backend
-          mvn test -pl subway-ticket-backend -Dspring.profiles.active=test
+        run: mvn -f backend/pom.xml test
 
       - name: Upload test results
         if: always()
