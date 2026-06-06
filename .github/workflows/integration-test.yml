@@ -2,7 +2,12 @@
 
 on:
   push:
-    branches: [master, main]
+    branches:
+      - master
+      - main
+      - 'bugfix/**'
+    paths:
+      - 'backend/src/test/java/com/subway/ticket/integration/**.java'
   pull_request:
     branches: [master, main]
 
