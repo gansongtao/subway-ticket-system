@@ -1,5 +1,6 @@
-package com.subway.ticket.unit;
+package com.subway.ticket.unit.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.subway.ticket.config.FareProperties;
 import com.subway.ticket.domain.Station;
 import com.subway.ticket.dto.FareQuote;
@@ -81,7 +82,7 @@ class FareServiceTest {
         Station fromStation = createStation(1L, "龙翔桥", "LXQ");
         Station toStation = createStation(2L, "凤起路", "FQL");
 
-        when(stationMapper.selectList(any()))
+        when(stationMapper.selectList(any(QueryWrapper.class)))
                 .thenReturn(List.of(fromStation))
                 .thenReturn(List.of(toStation));
 
@@ -116,7 +117,7 @@ class FareServiceTest {
     @DisplayName("测试站点不存在的情况")
     void testCalculateFare_StationNotFound_ReturnsError() {
         // 模拟站点不存在
-        when(stationMapper.selectList(any()))
+        when(stationMapper.selectList(any(QueryWrapper.class)))
                 .thenReturn(Collections.emptyList());
 
         when(graphService.isEmpty()).thenReturn(false);
@@ -136,7 +137,7 @@ class FareServiceTest {
         Station fromStation = createStation(1L, "站点A", "STA");
         Station toStation = createStation(2L, "站点B", "STB");
 
-        when(stationMapper.selectList(any()))
+        when(stationMapper.selectList(any(QueryWrapper.class)))
                 .thenReturn(List.of(fromStation))
                 .thenReturn(List.of(toStation));
 
@@ -162,7 +163,7 @@ class FareServiceTest {
         Station fromStation = createStation(1L, "火车东站", "HCD");
         Station toStation = createStation(2L, "西湖文化广场", "XWH");
 
-        when(stationMapper.selectList(any()))
+        when(stationMapper.selectList(any(QueryWrapper.class)))
                 .thenReturn(List.of(fromStation))
                 .thenReturn(List.of(toStation));
 
@@ -191,7 +192,7 @@ class FareServiceTest {
         Station fromStation = createStation(1L, "站点C", "STC");
         Station toStation = createStation(2L, "站点D", "STD");
 
-        when(stationMapper.selectList(any()))
+        when(stationMapper.selectList(any(QueryWrapper.class)))
                 .thenReturn(List.of(fromStation))
                 .thenReturn(List.of(toStation));
 
@@ -218,7 +219,7 @@ class FareServiceTest {
         Station fromStation = createStation(1L, "起点", "QD");
         Station toStation = createStation(2L, "终点", "ZD");
 
-        when(stationMapper.selectList(any()))
+        when(stationMapper.selectList(any(QueryWrapper.class)))
                 .thenReturn(List.of(fromStation))
                 .thenReturn(List.of(toStation));
 

@@ -1,4 +1,4 @@
-package com.subway.ticket.unit;
+package com.subway.ticket.unit.dto;
 
 import com.subway.ticket.dto.CreateOrderReq;
 import com.subway.ticket.dto.FareQuote;

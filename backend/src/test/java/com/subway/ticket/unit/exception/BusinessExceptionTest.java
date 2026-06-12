@@ -1,4 +1,4 @@
-package com.subway.ticket.unit;
+package com.subway.ticket.unit.exception;
 
 import com.subway.ticket.exception.BusinessException;
 import org.junit.jupiter.api.DisplayName;

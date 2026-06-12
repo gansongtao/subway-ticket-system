@@ -1,4 +1,4 @@
-package com.subway.ticket.unit.impl;
+package com.subway.ticket.unit.service.impl;
 
 import com.subway.ticket.domain.Order;
 import com.subway.ticket.domain.Station;

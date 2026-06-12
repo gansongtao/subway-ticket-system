@@ -1,4 +1,4 @@
-package com.subway.ticket.unit;
+package com.subway.ticket.unit.service;
 
 import com.subway.ticket.domain.Line;
 import com.subway.ticket.domain.LineStation;
@@ -215,7 +215,7 @@ class GraphServiceTest {
         line2.setName("2号线");
         line2.setColor("E57B46");
 
-        return List.of(line1, line2);
+        return Arrays.asList(line1, line2);
     }
 
     private List<Station> createTestStations() {
@@ -234,7 +234,7 @@ class GraphServiceTest {
         s3.setName("武林广场");
         s3.setCode("WGC");
 
-        return List.of(s1, s2, s3);
+        return Arrays.asList(s1, s2, s3);
     }
 
     private List<LineStation> createTestLineStations() {
@@ -262,7 +262,7 @@ class GraphServiceTest {
         ls4.setStationId(11L);
         ls4.setSeq(1);
 
-        return List.of(ls1, ls2, ls3, ls4);
+        return Arrays.asList(ls1, ls2, ls3, ls4);
     }
 
     private void setField(Object obj, String fieldName, Object value) throws Exception {

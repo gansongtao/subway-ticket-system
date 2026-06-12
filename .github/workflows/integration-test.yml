@@ -6,8 +6,8 @@ on:
       - master
       - main
       - 'bugfix/**'
-    paths:
-      - 'backend/src/test/java/com/subway/ticket/integration/**.java'
+    paths-ignore:
+      - 'backend/src/test/java/com/subway/ticket/unit/**'
   pull_request:
     branches: [master, main]
 
