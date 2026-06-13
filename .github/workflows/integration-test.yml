@@ -23,7 +23,8 @@ jobs:
           cache: maven
 
       - name: Run integration tests
-        run: mvn test -pl backend -Dspring.profiles.active=test
+        run: mvn test -Dspring.profiles.active=test
+        working-directory: backend
 
       - name: Upload test results
         if: always()
