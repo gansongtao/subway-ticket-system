@@ -2,7 +2,12 @@
 
 on:
   push:
-    branches: [master, main]
+    branches:
+      - master
+      - main
+      - 'bugfix/**'
+    paths-ignore:
+      - 'backend/src/test/java/com/subway/ticket/unit/**'
   pull_request:
     branches: [master, main]
 
@@ -23,8 +28,7 @@ jobs:
           cache: maven
 
       - name: Run integration tests
-        run: mvn test -Dspring.profiles.active=test
-        working-directory: backend
+        run: mvn -f backend/pom.xml test
 
       - name: Upload test results
         if: always()

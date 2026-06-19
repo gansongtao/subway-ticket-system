@@ -45,16 +45,16 @@ public class StationService {
     public List<Station> searchStations(String keyword) {
         QueryWrapper<Station> query = new QueryWrapper<>();
         query.eq("is_active", 1);
-        
+
         if (keyword != null && !keyword.trim().isEmpty()) {
             query.like("name", keyword);
             // Limit only when searching to avoid huge result if user spams search
             query.last("LIMIT 50");
         }
-        
+
         List<Station> list = stationMapper.selectList(query);
         populateLineNames(list);
-        
+
         // Deduplicate by name (since transfer stations have multiple records)
         return list.stream()
                 .filter(distinctByKey(Station::getName))
@@ -63,20 +63,20 @@ public class StationService {
 
     private void populateLineNames(List<Station> stations) {
         if (stations == null || stations.isEmpty()) return;
-        
+
         // Get all unique line IDs
         List<Long> lineIds = stations.stream()
                 .map(Station::getLineId)
                 .distinct()
                 .collect(Collectors.toList());
-        
+
         // Fetch lines and create maps
         List<Line> lines = lineMapper.selectByIds(lineIds);
         Map<Long, String> lineNameMap = lines.stream()
                 .collect(Collectors.toMap(Line::getId, Line::getName));
         Map<Long, String> lineColorMap = lines.stream()
-                .collect(Collectors.toMap(Line::getId, Line::getColor));
-        
+                .collect(Collectors.toMap(Line::getId, line -> line.getColor() != null ? line.getColor() : "", (existing, replacement) -> existing));
+
         // Populate line names and colors
         stations.forEach(s -> {
             s.setLineName(lineNameMap.get(s.getLineId()));

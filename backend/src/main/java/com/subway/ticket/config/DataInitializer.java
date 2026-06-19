@@ -129,7 +129,7 @@ public class DataInitializer implements CommandLineRunner {
                                 try {
                                     station.setLng(Double.parseDouble(parts[0]));
                                     station.setLat(Double.parseDouble(parts[1]));
-                                } catch (Exception e) {}
+                                } catch (Exception ignored) {}
                             }
                             stationMapper.insert(station);
                         }

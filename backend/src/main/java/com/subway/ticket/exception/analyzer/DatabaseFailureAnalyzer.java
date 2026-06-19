@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class DatabaseFailureAnalyzer extends AbstractFailureAnalyzer<SQLException> {
 
     @Override
-    protected FailureAnalysis analyze(Throwable rootFailure, SQLException cause) {
+    public FailureAnalysis analyze(Throwable rootFailure, SQLException cause) {
         String description = "数据库操作失败: " + cause.getMessage();
         String action = "请检查 SQL 语法或数据库表结构是否与代码定义一致。";
 
